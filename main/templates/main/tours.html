@@ -1,0 +1,151 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Tours | MB Travels{% endblock %}
+
+{% block content %}
+
+<!-- Admin-only Add New Tour Button -->
+{% if request.user.is_staff %}
+<div class="max-w-6xl mx-auto px-4 mt-6 mb-4 flex justify-end">
+  <a href="{% url 'admin:main_tour_add' %}" 
+     class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600">
+    + Add New Tour
+  </a>
+</div>
+{% endif %}
+
+<!-- Hero Section -->
+<section class="relative fade-in py-20">
+  <div class="absolute inset-0 bg-[url('{% static 'images/safari-hero.jpg' %}')] bg-cover bg-center opacity-30"></div>
+  <div class="relative max-w-6xl mx-auto px-4">
+    <div class="bg-black/40 backdrop-blur-md rounded-2xl p-10 shadow-xl text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">Embark on the Journey of a Lifetime</h1>
+      <p class="text-gray-200 text-lg">Explore curated safaris across Kenya, Tanzania, Uganda & beyond.</p>
+      <a href="#tours-section" 
+         class="text-yellow-400 font-medium mt-6 animate-bounce inline-block" aria-label="Explore safaris">
+         ↓ Explore Safaris
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Search Bar -->
+<section class="fade-in py-6">
+  <div class="max-w-4xl mx-auto px-4">
+    <form method="get" action="{% url 'tours' %}" class="flex items-center gap-4" role="search" aria-label="Search tours">
+      <input type="text" name="q" placeholder="Search destinations…" 
+             class="w-full px-4 py-3 rounded-lg bg-black/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+             aria-label="Search destinations">
+      <button type="submit" 
+              class="px-6 py-3 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400">
+        Search
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- Featured Tours -->
+<section class="fade-in py-12">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-8">🌟 Featured Safaris</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for tour in featured_tours %}
+        <div class="bg-black/30 backdrop-blur-md rounded-xl shadow-lg overflow-hidden hover:scale-105 transition">
+          <img src="{% if tour.image %}{{ tour.image.url }}{% else %}{% static 'images/placeholder-tour.jpg' %}{% endif %}" 
+               alt="{{ tour.name }}" class="w-full h-48 object-cover">
+          <div class="p-6 text-white">
+            <h3 class="text-2xl font-bold mb-2">{{ tour.name }}</h3>
+            {% if tour.duration %}<p class="text-yellow-400 font-medium mb-1">{{ tour.duration }}</p>{% endif %}
+            <p class="text-gray-300 mb-4">{{ tour.description|truncatewords:20 }}</p>
+            {% if tour.price %}
+              <p class="text-sm text-gray-400 mb-2">From ${{ tour.price|floatformat:2 }}</p>
+            {% endif %}
+            <div class="flex flex-wrap gap-2">
+              <a href="{% url 'tour_detail' tour.slug %}" 
+                 class="px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400" aria-label="Explore {{ tour.name }}">
+                Explore
+              </a>
+              <a href="{% url 'contact' %}?tour={{ tour.name|urlencode }}" 
+                 class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600">
+                Plan My Safari
+              </a>
+            </div>
+            {% if request.user.is_staff %}
+            <div class="mt-4 flex gap-2">
+              <a href="{% url 'admin:main_tour_change' tour.id %}" class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">Edit</a>
+              <a href="{% url 'admin:main_tour_delete' tour.id %}" class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">Delete</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-gray-400 text-center col-span-3">No featured tours yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- All Tours -->
+<section id="tours-section" class="fade-in py-12">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-8">All Safaris</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for tour in tours %}
+        <div class="bg-black/30 backdrop-blur-md rounded-xl shadow-lg overflow-hidden hover:scale-105 transition">
+          <img src="{% if tour.image %}{{ tour.image.url }}{% else %}{% static 'images/placeholder-tour.jpg' %}{% endif %}" 
+               alt="{{ tour.name }}" class="w-full h-48 object-cover">
+          <div class="p-6 text-white">
+            <h3 class="text-2xl font-bold mb-2">{{ tour.name }}</h3>
+            {% if tour.duration %}<p class="text-yellow-400 font-medium mb-1">{{ tour.duration }}</p>{% endif %}
+            <p class="text-gray-300 mb-4">{{ tour.description|truncatewords:20 }}</p>
+            {% if tour.price %}
+              <p class="text-sm text-gray-400 mb-2">From ${{ tour.price|floatformat:2 }}</p>
+            {% endif %}
+            <div class="flex flex-wrap gap-2">
+              <a href="{% url 'tour_detail' tour.slug %}" 
+                 class="px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400" aria-label="Explore {{ tour.name }}">
+                Explore
+              </a>
+              <a href="{% url 'contact' %}?tour={{ tour.name|urlencode }}" 
+                 class="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600">
+                Plan My Safari
+              </a>
+            </div>
+            {% if request.user.is_staff %}
+            <div class="mt-4 flex gap-2">
+              <a href="{% url 'admin:main_tour_change' tour.id %}" class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">Edit</a>
+              <a href="{% url 'admin:main_tour_delete' tour.id %}" class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">Delete</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-white text-center col-span-3">No tours available at the moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="fade-in py-16">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="bg-yellow-500 text-black rounded-2xl shadow-xl p-10 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4">Not sure which safari fits you best?</h2>
+      <p class="text-lg mb-6">Let our team help you craft the perfect adventure — tailored to your style, budget, and dream destinations.</p>
+      <a href="{% url 'contact' %}" 
+         class="inline-block px-8 py-3 bg-black text-yellow-400 font-semibold rounded-lg hover:bg-gray-900 transition">
+        Contact Us Today
+      </a>
+    </div>
+  </div>
+</section>
+
+{% if request.resolver_match.url_name != 'contact' %}
+  <!-- Sticky Floating CTA Button -->
+  <a href="{% url 'contact' %}" 
+     class="fixed bottom-6 left-6 bg-yellow-500 text-black font-semibold px-5 py-3 rounded-full shadow-lg hover:bg-yellow-400 transition z-50" aria-label="Plan My Safari">
+     Plan My Safari🦁
+  </a>
+{% endif %}
+{% endblock %}

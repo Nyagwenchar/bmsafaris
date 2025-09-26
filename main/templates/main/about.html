@@ -1,0 +1,93 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<!-- Hero -->
+<section id="about-hero" class="relative h-[60vh] flex items-center justify-center text-center text-white">
+  <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/static/images/about-hero.jpg');"></div>
+  <div class="absolute inset-0 bg-black/50"></div>
+  <div class="relative z-10 max-w-3xl px-4">
+    <h1 class="text-4xl font-bold mb-4 animate-fade-in-up">About MB Travels</h1>
+    <p class="text-lg text-gray-200 animate-fade-in-up delay-200">
+      Creating unforgettable journeys with a personal touch.
+    </p>
+  </div>
+</section>
+
+<!-- Mission -->
+<section id="mission" class="py-16 fade-in">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-12 gap-12 items-center px-4">
+    <div class="md:col-span-7 space-y-6">
+      <h2 class="text-3xl font-bold">Our Mission</h2>
+      <p class="text-gray-300 leading-relaxed">
+        At MB Travels, we believe travel is more than destinations — it’s about stories, connections, and memories.
+        Our mission is to craft journeys that feel authentic, immersive, and unforgettable.
+      </p>
+      <p class="text-gray-300 leading-relaxed">
+        From the moment you reach out, we’re here to guide you with expertise, care, and a passion for exploration.
+      </p>
+    </div>
+    <div class="md:col-span-5">
+      <img src="/static/images/mission.jpg" alt="Our Mission" class="rounded-lg shadow-lg">
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section id="values" class="py-16 bg-black/40">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-10">Our Values</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-6 bg-black/50 rounded-lg shadow animate-fade-in-up">
+        <div class="text-yellow-400 text-4xl mb-4">🌍</div>
+        <h3 class="text-xl font-semibold mb-2">Authenticity</h3>
+        <p class="text-gray-300">We design experiences that connect you with real cultures and communities.</p>
+      </div>
+      <div class="p-6 bg-black/50 rounded-lg shadow animate-fade-in-up delay-200">
+        <div class="text-yellow-400 text-4xl mb-4">🤝</div>
+        <h3 class="text-xl font-semibold mb-2">Care</h3>
+        <p class="text-gray-300">Every detail matters — we treat your journey as if it were our own.</p>
+      </div>
+      <div class="p-6 bg-black/50 rounded-lg shadow animate-fade-in-up delay-400">
+        <div class="text-yellow-400 text-4xl mb-4">✨</div>
+        <h3 class="text-xl font-semibold mb-2">Excellence</h3>
+        <p class="text-gray-300">From planning to execution, we strive for seamless, memorable experiences.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section id="team" class="py-16 fade-in">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-10">Meet the Team</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-black/40 p-6 rounded-lg shadow">
+        <img src="/static/images/team1.jpg" alt="Team Member" class="w-32 h-32 mx-auto rounded-full mb-4">
+        <h3 class="text-xl font-semibold">Jane Doe</h3>
+        <p class="text-gray-400">Founder & Travel Designer</p>
+      </div>
+      <div class="bg-black/40 p-6 rounded-lg shadow">
+        <img src="/static/images/team2.jpg" alt="Team Member" class="w-32 h-32 mx-auto rounded-full mb-4">
+        <h3 class="text-xl font-semibold">John Smith</h3>
+        <p class="text-gray-400">Safari Specialist</p>
+      </div>
+      <div class="bg-black/40 p-6 rounded-lg shadow">
+        <img src="/static/images/team3.jpg" alt="Team Member" class="w-32 h-32 mx-auto rounded-full mb-4">
+        <h3 class="text-xl font-semibold">Mary Johnson</h3>
+        <p class="text-gray-400">Customer Experience Lead</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="py-16 bg-yellow-500 text-black text-center">
+  <h2 class="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
+  <p class="mb-6">Let’s design your next adventure together.</p>
+  <a href="{% url 'contact' %}" 
+     class="px-6 py-3 bg-black text-white font-semibold rounded hover:bg-gray-800">
+    Contact Us
+  </a>
+</section>
+
+{% endblock %}

@@ -1,33 +1,419 @@
+{% extends "main/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>BM Safaris</title>
-  <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
-</head>
-<body class="bg-gray-100 text-gray-900 antialiased">
-  <header class="relative h-screen overflow-hidden">
-    <img
-      src="{% static 'images/hero.jpg' %}"
-      alt="Safari vehicle on African savanna"
-      class="absolute inset-0 w-full h-full object-cover"
-    />
 
-    <div class="relative z-10 flex flex-col items-center justify-center h-full bg-black bg-opacity-50 px-4">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center">
-        Unleash the Wild
-      </h1>
-      <p class="mt-4 text-lg sm:text-xl text-gray-200 text-center max-w-2xl">
-        Discover Africa with BM Safaris
+{% block title %}MB Travels | Kenya Safari Adventures{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section id="hero" 
+         class="relative min-h-[70vh] md:h-screen flex items-center justify-center text-center text-white 
+                rounded-2xl sm:rounded-3xl overflow-hidden mx-2 my-4 sm:mx-4 sm:my-6 shadow-lg">
+  <!-- Background image -->
+  <div class="absolute inset-0 bg-cover bg-center" 
+       style="background-image: url('{% static "images/safari-hero.jpg" %}');">
+  </div>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-2xl sm:max-w-3xl px-4 sm:px-6">
+    <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 flex flex-wrap items-center justify-center gap-2 sm:gap-3 animate-fade-in">
+      Explore Africa with 
+      <span class="text-yellow-400 flex items-center gap-1 sm:gap-2">
+        <!-- PNG icon -->
+        <img src="{% static 'images/your-icon.png' %}" 
+             alt="MB Travels Icon" 
+             class="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-contain inline-block align-middle drop-shadow-lg" />
+        <span class="align-middle">MB Travels</span>
+      </span>
+    </h1>
+    <p class="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-200 animate-fade-in-delay">
+      Authentic safaris, unforgettable adventures, and journeys that stay with you forever.
+    </p>
+    <a href="{% url 'tours' %}" 
+        class="px-6 sm:px-8 py-3 sm:py-4 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400 transition animate-fade-in-delay-2">
+      Discover Tours
+    </a>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" 
+         class="relative py-20 bg-transparent backdrop-blur-sm text-white">
+  <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+    
+    <!-- Left: Image -->
+    <div class="relative animate-fadeInLeft opacity-0">
+      <img src="{% static 'images/about-safari.jpg' %}" 
+           alt="Safari Experience" 
+           class="rounded-lg shadow-lg">
+    </div>
+
+    <!-- Right: Text -->
+    <div class="animate-fadeInRight opacity-0">
+      <h2 class="text-3xl font-bold mb-4">
+        About <span class="text-yellow-400">MB Travels</span>
+      </h2>
+      <p class="mb-6 leading-relaxed">
+        At MB Travels, we believe a safari is more than a trip — it’s a journey into the wild heart of Africa. 
+        Our team of expert guides and local partners craft experiences that are authentic, safe, and unforgettable. 
+        From the Maasai Mara to the Serengeti, every detail is designed to connect you with nature and culture.
       </p>
-      <a
-        href="{% url 'tours:list' %}"
-        class="mt-8 inline-block bg-yellow-500 hover:bg-yellow-600 transition-colors duration-200 text-black font-semibold py-3 px-6 rounded-lg text-base sm:text-lg"
-      >
-        Explore Tours
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-2 gap-6 mb-6">
+        <div class="animate-stagger opacity-0">
+          <p class="text-3xl font-bold text-yellow-400">10+</p>
+          <p class="text-sm">Years Experience</p>
+        </div>
+        <div class="animate-stagger opacity-0 delay-200">
+          <p class="text-3xl font-bold text-yellow-400">500+</p>
+          <p class="text-sm">Happy Travelers</p>
+        </div>
+        <div class="animate-stagger opacity-0 delay-400">
+          <p class="text-3xl font-bold text-yellow-400">5</p>
+          <p class="text-sm">National Parks</p>
+        </div>
+        <div class="animate-stagger opacity-0 delay-600">
+          <p class="text-3xl font-bold text-yellow-400">100%</p>
+          <p class="text-sm">Authentic Adventures</p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <a href="{% url 'tours' %}" 
+         class="inline-block bg-yellow-500 text-black font-semibold px-6 py-3 rounded-md hover:bg-yellow-400 transition">
+       Explore Our Tours
       </a>
     </div>
-  </header>
-</body>
-</html>
+  </div>
+</section>
+
+<!-- Animations -->
+<style>
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fadeInLeft { animation: fadeInLeft 1s ease forwards; }
+  .animate-fadeInRight { animation: fadeInRight 1s ease forwards; }
+  .animate-stagger { animation: fadeInUp 1s ease forwards; }
+
+  /* Delay utilities */
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-400 { animation-delay: 0.4s; }
+  .delay-600 { animation-delay: 0.6s; }
+</style>
+
+<!-- Script to trigger animations on scroll -->
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.remove("opacity-0");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll(".animate-fadeInLeft, .animate-fadeInRight, .animate-stagger")
+    .forEach(el => observer.observe(el));
+</script>
+
+<!-- Featured Destinations -->
+<section id="destinations" class="fade-in py-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center text-3xl sm:text-4xl font-bold mb-10">
+      Explore Destinations
+    </h2>
+
+    <div class="grid gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-3">
+      
+      <!-- Kenya -->
+      <div class="stagger-item fade-in bg-black/40 rounded-xl overflow-hidden shadow-lg">
+        <img src="{% static 'images/kenya.jpg' %}" alt="Kenya" class="w-full h-56 object-cover">
+        <div class="p-4 sm:p-6">
+          <h3 class="text-lg sm:text-xl font-semibold mb-2">Masai Mara, Kenya</h3>
+          <p class="text-sm sm:text-base text-gray-200">
+            Witness the Great Migration and breathtaking wildlife.
+          </p>
+        </div>
+      </div>
+
+      <!-- Uganda -->
+      <div class="stagger-item fade-in bg-black/40 rounded-xl overflow-hidden shadow-lg">
+        <img src="{% static 'images/uganda.jpg' %}" alt="Uganda" class="w-full h-56 object-cover">
+        <div class="p-4 sm:p-6">
+          <h3 class="text-lg sm:text-xl font-semibold mb-2">Bwindi, Uganda</h3>
+          <p class="text-sm sm:text-base text-gray-200">
+            Trek through lush forests to meet the mountain gorillas.
+          </p>
+        </div>
+      </div>
+
+      <!-- Tanzania -->
+      <div class="stagger-item fade-in bg-black/40 rounded-xl overflow-hidden shadow-lg">
+        <img src="{% static 'images/tanzania.jpg' %}" alt="Tanzania" class="w-full h-56 object-cover">
+        <div class="p-4 sm:p-6">
+          <h3 class="text-lg sm:text-xl font-semibold mb-2">Serengeti, Tanzania</h3>
+          <p class="text-sm sm:text-base text-gray-200">
+            Endless plains, big cats, and unforgettable sunsets.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section id="why-us" class="fade-in py-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center text-3xl sm:text-4xl font-bold mb-10">
+      Why Choose MB Travels
+    </h2>
+
+    <div class="grid gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-4 text-center">
+      
+      <!-- Expert Guides -->
+      <div class="stagger-item fade-in bg-black/40 rounded-xl p-6 sm:p-8 shadow-lg">
+        <div class="text-4xl mb-4">🦁</div>
+        <h3 class="text-lg sm:text-xl font-semibold mb-2">Expert Guides</h3>
+        <p class="text-sm sm:text-base text-gray-200">
+          Local experts with years of experience bring the savannah to life.
+        </p>
+      </div>
+
+      <!-- Curated Itineraries -->
+      <div class="stagger-item fade-in bg-black/40 rounded-xl p-6 sm:p-8 shadow-lg">
+        <div class="text-4xl mb-4">📜</div>
+        <h3 class="text-lg sm:text-xl font-semibold mb-2">Curated Itineraries</h3>
+        <p class="text-sm sm:text-base text-gray-200">
+          Every journey is carefully designed for unforgettable experiences.
+        </p>
+      </div>
+
+      <!-- Authentic Adventures -->
+      <div class="stagger-item fade-in bg-black/40 rounded-xl p-6 sm:p-8 shadow-lg">
+        <div class="text-4xl mb-4">🌍</div>
+        <h3 class="text-lg sm:text-xl font-semibold mb-2">Authentic Adventures</h3>
+        <p class="text-sm sm:text-base text-gray-200">
+          Connect with Africa’s landscapes, wildlife, and cultures in a genuine way.
+        </p>
+      </div>
+
+      <!-- Trusted Service -->
+      <div class="stagger-item fade-in bg-black/40 rounded-xl p-6 sm:p-8 shadow-lg">
+        <div class="text-4xl mb-4">⭐</div>
+        <h3 class="text-lg sm:text-xl font-semibold mb-2">Trusted Service</h3>
+        <p class="text-sm sm:text-base text-gray-200">
+          Hundreds of happy travelers recommend MB Travels for seamless safaris.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Traveller Reviews Section -->
+<section id="reviews" class="fade-in py-16">
+  <div class="max-w-6xl mx-auto px-4">
+    
+    <!-- Transparent enclosure -->
+    <div class="bg-black/40 backdrop-blur-md rounded-2xl p-10 shadow-xl">
+      
+      <!-- Section Heading -->
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold">Traveler Reviews</h2>
+        <p class="text-gray-200 mt-2">Share your experience with us — no login required.</p>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-12 items-start">
+         <!-- Left: Review Form -->
+         <div class="md:col-span-7">
+          <form id="review-form" method="post" action="{% url 'submit_review' %}" 
+          class="bg-black/30 p-8 rounded-lg shadow-lg space-y-6">
+          {% csrf_token %}
+          {{ form.name }}
+          {{ form.content }}
+             <p id="char-count" class="text-sm text-gray-400 mt-1">0/300</p>
+             <div class="text-center">
+              <button type="submit" 
+              class="px-6 py-3 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400">
+              Submit Review
+            </button>
+          </div>
+        </form>
+      </div>
+
+        <!-- Right: Reviews -->
+        <div class="md:col-span-5 md:border-l md:border-gray-600 md:pl-8">
+          <div id="reviews-list" class="space-y-4">
+            {% for review in reviews %}
+            <div class="bg-black/30 p-4 rounded shadow review-item" data-id="{{ review.id }}">
+              <p class="italic">"{{ review.content }}"</p>
+              <p class="text-sm text-gray-300 mt-2">
+                — {{ review.display_name }} on {{ review.created_at|date:"M d, Y" }}
+              </p>
+              {% if request.user.is_staff %}
+              <button class="delete-review mt-2 px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-500" data-id="{{ review.id }}">
+                Delete
+              </button>
+              {% endif %}
+            </div>
+            {% empty %}
+            <div class="text-center text-gray-300">
+              <p>No reviews yet. Be the first to share your tour experience!</p>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- More Reviews Button -->
+          {% if total_reviews > 3 %}
+            <div class="text-center mt-6">
+              <button id="more-reviews" 
+                      class="px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">
+                More Reviews
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- End enclosure -->
+
+  </div>
+</section>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-6 right-6 bg-yellow-500 text-black px-4 py-2 rounded shadow-lg hidden z-50"></div>
+
+<!-- Animations -->
+<style>
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+</style>
+
+<!-- AJAX + Animations + Toast + Load More -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("review-form");
+  const reviewsList = document.getElementById("reviews-list");
+  const textarea = document.getElementById("id_content") || document.getElementById("review-content");
+  const charCount = document.getElementById("char-count");
+  const toast = document.getElementById("toast");
+  const moreBtn = document.getElementById("more-reviews");
+
+  // Live character counter
+  if (textarea) {
+    textarea.addEventListener("input", () => {
+      charCount.textContent = `${textarea.value.length}/300`;
+    });
+  }
+
+  // Submit review via AJAX
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      headers: { "X-Requested-With": "XMLHttpRequest" },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        const reviewHTML = `
+          <div class="bg-black/40 p-4 rounded shadow review-item animate-fade-in-up" data-id="${data.review.id}">
+            <p class="italic">"${data.review.content}"</p>
+            <p class="text-sm text-gray-300 mt-2">
+              — ${data.review.name} on ${data.review.created_at}
+            </p>
+            ${data.is_admin ? `<button class="delete-review mt-2 px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-500" data-id="${data.review.id}">Delete</button>` : ''}
+          </div>`;
+        reviewsList.insertAdjacentHTML("afterbegin", reviewHTML);
+        form.reset();
+        charCount.textContent = "0/300";
+        reviewsList.scrollIntoView({ behavior: "smooth", block: "start" });
+        showToast("Review submitted successfully!");
+      } else {
+        showToast("Error: Please check your input.");
+      }
+    })
+    .catch(() => showToast("Something went wrong. Try again."));
+  });
+
+  // Delete review via AJAX (staff only)
+  reviewsList.addEventListener("click", function(e) {
+    if (e.target.classList.contains("delete-review")) {
+      const reviewId = e.target.dataset.id;
+      fetch(`/delete-review/${reviewId}/`, {
+        method: "POST",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          e.target.closest(".review-item").remove();
+          showToast("Review deleted.");
+        }
+      });
+    }
+  });
+
+  // Load more reviews via AJAX
+  if (moreBtn) {
+    moreBtn.addEventListener("click", () => {
+      fetch("/reviews/load-more/", {
+        method: "GET",
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          data.reviews.forEach(r => {
+            const reviewHTML = `
+              <div class="bg-black/40 p-4 rounded shadow review-item animate-fade-in-up" data-id="${r.id}">
+                <p class="italic">"${r.content}"</p>
+                <p class="text-sm text-gray-300 mt-2">
+                  — ${r.name} on ${r.created_at}
+                </p>
+                ${data.is_admin ? `<button class="delete-review mt-2 px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-500" data-id="${r.id}">Delete</button>` : ''}
+              </div>`;
+            reviewsList.insertAdjacentHTML("beforeend", reviewHTML);
+          });
+          moreBtn.remove(); // remove button after loading all
+          showToast("Loaded more reviews.");
+        }
+      });
+    });
+  }
+
+  // Toast function
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    setTimeout(() => toast.classList.add("hidden"), 3000);
+  }
+});
+</script>
+
+{% endblock %}

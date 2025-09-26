@@ -1,0 +1,76 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}{{ tour.name }} | MB Travels{% endblock %}
+
+{% block content %}
+<section class="relative fade-in py-20">
+  <div class="absolute inset-0 bg-[url('{% static 'images/safari-bg.jpg' %}')] bg-cover bg-center opacity-30"></div>
+  <div class="relative max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-black/40 backdrop-blur-md rounded-2xl p-10 shadow-xl text-white">
+      
+      <!-- Left: Tour Info -->
+      <div>
+        <h1 class="text-4xl font-bold mb-4">{{ tour.name }}</h1>
+        {% if tour.duration %}
+          <p class="text-yellow-400 text-lg font-medium mb-2">{{ tour.duration }}</p>
+        {% endif %}
+        <p class="text-gray-200 mb-6">{{ tour.description }}</p>
+        {% if tour.price %}
+          <p class="text-sm text-gray-300 mb-6">From ${{ tour.price|floatformat:2 }}</p>
+        {% endif %}
+
+        {% if tour.detailed_info %}
+          <div class="prose prose-invert max-w-none mb-6">
+            {{ tour.detailed_info|safe }}
+          </div>
+        {% endif %}
+
+        <!-- Admin-only controls -->
+        {% if request.user.is_staff %}
+        <div class="flex gap-3 mb-6">
+          <a href="{% url 'admin:main_tour_change' tour.id %}" 
+             class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            Edit Tour
+          </a>
+          <a href="{% url 'admin:main_tour_delete' tour.id %}" 
+             class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+            Delete Tour
+          </a>
+        </div>
+        {% endif %}
+
+        <div class="flex flex-wrap gap-3">
+          <a href="{% url 'tours' %}" 
+             class="px-6 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-400">
+            ← Back to All Tours
+          </a>
+          <a href="{% url 'contact' %}?tour={{ tour.name|urlencode }}" 
+             class="px-6 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600">
+            Plan My Safari
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Gallery -->
+      <div>
+        {% if tour.gallery.exists %}
+          <h2 class="text-2xl font-bold mb-4">Gallery</h2>
+          <div class="grid grid-cols-2 gap-4">
+            {% for img in tour.gallery.all %}
+              <a href="{{ img.image.url }}" data-lightbox="tour-gallery" data-title="{{ img.caption }}">
+                <img src="{{ img.image.url }}" 
+                     alt="{{ img.caption|default:tour.name }}" 
+                     class="rounded-lg object-cover h-40 w-full hover:opacity-80 transition">
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-gray-400">No gallery images uploaded yet.</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

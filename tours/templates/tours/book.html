@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-xl mx-auto p-8 bg-white rounded shadow">
+  <h2 class="text-2xl font-bold mb-4">Book {{ tour.name }}</h2>
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"
+            class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded">
+      Confirm Booking
+    </button>
+  </form>
+</div>
+{% endblock %}

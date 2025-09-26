@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}{{ page_title|default:"MB Travels" }}{% endblock %}</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <!-- Lightbox CSS (kept in head for styles) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+
+  <style>
+    /* Fade-in animation */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Message banners */
+    .message-banner { opacity: 0; transform: translateY(-15px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .message-banner.show { opacity: 1; transform: translateY(0); }
+
+    /* Background */
+    body {
+      margin: 0; padding: 0; overflow-x: hidden;
+      background: url('{% static "images/safari-bg.jpg" %}') no-repeat center center fixed;
+      background-size: cover; color: white;
+    }
+    .overlay { background: rgba(0,0,0,0.55); min-height: 100vh; display:flex; flex-direction:column; }
+
+    /* Navbar link styles */
+    .nav-link { position: relative; color: #e5e7eb; transition: color 0.3s ease; }
+    .nav-link::after {
+      content: ""; position: absolute; left: 0; bottom: -4px; width: 0%; height: 2px;
+      background: #facc15; transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active { color: #facc15; font-weight: 600; }
+    .nav-link.active::after { width: 100%; }
+
+    html { scroll-behavior: smooth; }
+    :target::before { content: ""; display: block; height: 70px; margin-top: -70px; }
+
+    /* Mobile menu animation */
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+    #mobile-menu.open {
+      max-height: 500px;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+ <div class="overlay">
+  <!-- Navbar -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-sm text-white transition-all duration-500 ease-in-out">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="{% url 'home' %}" class="flex items-center gap-2 text-white font-bold">
+        <img src="{% static 'images/your-icon.png' %}" alt="MB Travels Icon" class="h-8 w-8 object-contain">
+        <span>MB Travels</span>
+      </a>
+      <nav class="hidden md:block" aria-label="Primary navigation">
+        <ul id="nav-links" class="flex items-center gap-6 text-sm md:text-base">
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li><a href="{% url 'about' %}" class="nav-link">About</a></li>
+          <li><a href="{% url 'tours' %}" class="nav-link">Tours</a></li>
+          <li><a href="{% url 'home' %}#reviews" class="nav-link">Reviews</a></li>
+          <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button id="menu-toggle" class="md:hidden focus:outline-none" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="md:hidden bg-black/80 backdrop-blur-md" aria-hidden="true">
+      <ul class="flex flex-col items-center gap-4 py-6 text-lg">
+        <li><a href="{% url 'home' %}" class="nav-link block">Home</a></li>
+        <li><a href="{% url 'about' %}" class="nav-link block">About</a></li>
+        <li><a href="{% url 'tours' %}" class="nav-link block">Tours</a></li>
+        <li><a href="{% url 'home' %}#reviews" class="nav-link block">Reviews</a></li>
+        <li><a href="{% url 'contact' %}" class="nav-link block">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="pt-[70px] flex-grow">
+    {% if messages %}
+      <div class="px-6 py-4">
+        {% for message in messages %}
+          <div class="message-banner rounded-md"
+               style="position: relative; margin: 0 auto; max-width: 48rem; padding: 1rem 1.25rem; border-radius: 0.5rem;
+                      {% if 'success' in message.tags %}
+                        background-color: rgba(34,197,94,0.95); color: white;
+                      {% elif 'error' in message.tags %}
+                        background-color: rgba(239,68,68,0.95); color: white;
+                      {% else %}
+                        background-color: rgba(55,65,81,0.95); color: white;
+                      {% endif %}">
+            {{ message }}
+            <button type="button" class="dismiss-btn" aria-label="Dismiss message"
+                    style="position:absolute; top:0.5rem; right:0.75rem; background:none; border:none; color:white; font-size:1.25rem; cursor:pointer;">
+              &times;
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 bg-black/40 backdrop-blur-md">
+    <p>&copy; {% now "Y" %} MB Travels. All rights reserved.</p>
+  </footer>
+ </div>
+
+<!-- Lightbox JS (placed before other scripts) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js" defer></script>
+
+<!-- Inline Scripts -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Fade-in observer
+    try {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      }, { threshold: 0.2 });
+      document.querySelectorAll(".fade-in").forEach(el => observer.observe(el));
+    } catch (e) { /* IntersectionObserver not supported */ }
+
+    // Messages auto-dismiss
+    document.querySelectorAll(".message-banner").forEach(banner => {
+      setTimeout(() => banner.classList.add("show"), 50);
+      setTimeout(() => {
+        banner.style.opacity = "0";
+        banner.style.transform = "translateY(-10px)";
+        setTimeout(() => banner.remove(), 200);
+      }, 5000);
+    });
+    document.querySelectorAll(".dismiss-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const banner = btn.closest(".message-banner");
+        if (!banner) return;
+        banner.style.opacity = "0";
+        banner.style.transform = "translateY(-10px)";
+        setTimeout(() => banner.remove(), 200);
+      });
+    });
+
+    // Mobile menu toggle with ARIA toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener("click", () => {
+        const isOpen = mobileMenu.classList.toggle("open");
+        mobileMenu.setAttribute("aria-hidden", !isOpen);
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+    }
+
+    // Floating buttons container and Back to Top button
+    const btnContainer = document.createElement("div");
+    Object.assign(btnContainer.style, {
+      position: "fixed", bottom: "20px", right: "20px",
+      display: "flex", gap: "10px",
+      zIndex: "50"
+    });
+    document.body.appendChild(btnContainer);
+
+    const backToTop = document.createElement("button");
+    backToTop.innerHTML = "↑";
+    Object.assign(backToTop.style, {
+      padding: "0.5rem 0.75rem", borderRadius: "9999px",
+      background: "transparent", color: "black",
+      border: "2px solid black",
+      fontSize: "1.1rem", cursor: "pointer",
+      display: "none",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+      transition: "all 0.3s ease"
+    });
+    backToTop.setAttribute("aria-label", "Back to top");
+    backToTop.addEventListener("mouseenter", () => {
+      backToTop.style.background = "black";
+      backToTop.style.color = "white";
+    });
+    backToTop.addEventListener("mouseleave", () => {
+      backToTop.style.background = "transparent";
+      backToTop.style.color = "black";
+    });
+    btnContainer.appendChild(backToTop);
+
+    // Show/hide Back to Top on scroll
+    window.addEventListener("scroll", () => {
+      backToTop.style.display = window.scrollY > 300 ? "block" : "none";
+    });
+
+    // Smooth scroll to top
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+</script>
+</body>
+</html>
